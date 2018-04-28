@@ -95,7 +95,7 @@ public class SlabStackSystem extends BaseComponentSystem {
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
     public void onRightClick(ActivateEvent event, EntityRef entity, SlabComponent slabComponent) {
-        logger.info("Works when pressed");
+        logger.info("Method gets activated when I press E rather than right click");
         EntityRef instigator = event.getInstigator();
         BlockComponent targetBlockComponent = event.getTarget().getComponent(BlockComponent.class);
         if (targetBlockComponent == null) {
