@@ -18,5 +18,5 @@ package org.terasology.logic.stack;
 import org.terasology.entitySystem.Component;
 
 public class SlabStackComponent implements Component {
-    public int slabs;
+    public int slabs = 1;
 }

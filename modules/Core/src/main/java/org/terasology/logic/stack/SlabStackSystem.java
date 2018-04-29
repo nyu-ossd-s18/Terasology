@@ -69,34 +69,11 @@ public class SlabStackSystem extends BaseComponentSystem {
     @In
     private LocalPlayer localPlayer;
 
-    //  @ReceiveEvent(components = {SlabComponent.class, SlabStackComponent.class, BlockComponent.class})
-    //  public void onActivate(ActivateEvent event, EntityRef entity){
-    //     BlockComponent blockComponent = entity.getComponent(BlockComponent.class);
-    //     Block block = blockComponent.getBlock();
-    //     EntityRef instigator = event.getInstigator();
-    //     BlockComponent targetBlockComponent = event.getTarget().getComponent(BlockComponent.class);
-    //     if (targetBlockComponent == null) {
-    //         event.consume();
-    //     }
-
-    //     Side surfaceSide = Side.inDirection(event.getHitNormal());
-    //     Side secondaryDirection = ChunkMath.getSecondaryPlacementDirection(event.getDirection(), event.getHitNormal());
-    //     Vector3i blockPos = new Vector3i(targetBlockComponent.getPosition());
-    //     Vector3i targetPos = new Vector3i(blockPos).add(surfaceSide.getVector3i());
-    //     SlabStackComponent stackComponent = event.getTarget().getComponent(SlabStackComponent.class);
-
-    //     if (stackComponent != null && stackComponent.slabs < MAX_SLABS) {
-    //         EntityRef stackEntity = event.getTarget();
-    //     } else if (canPlaceBlock(blockPos, targetPos)) {
-    //     }
-    //     event.consume();
-
-    // }
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
-    public void onRightClick(ActivateEvent event, EntityRef entity, SlabComponent slabComponent) {
-        logger.info("Method gets activated when I press E rather than right click");
+    public void onRightClick(ActivateEvent event, EntityRef entity, SlabStackComponent slabStackComponent) {
         EntityRef instigator = event.getInstigator();
         BlockComponent targetBlockComponent = event.getTarget().getComponent(BlockComponent.class);
+        logger.info("Targetblock: " + targetBlockComponent);
         if (targetBlockComponent == null) {
             event.consume();
             return;
@@ -106,87 +83,12 @@ public class SlabStackSystem extends BaseComponentSystem {
         Side secondaryDirection = ChunkMath.getSecondaryPlacementDirection(event.getDirection(), event.getHitNormal());
         Vector3i blockPos = new Vector3i(targetBlockComponent.getPosition());
         Vector3i targetPos = new Vector3i(blockPos).add(surfaceSide.getVector3i());
-        SlabStackComponent stackComponent = event.getTarget().getComponent(SlabStackComponent.class);
+        slabStackComponent = event.getTarget().getComponent(SlabStackComponent.class);
 
-//        if (stackComponent != null && stackComponent.ingots < MAX_INGOTS) {
-//            EntityRef stackEntity = event.getTarget();
-//            instigator.send(new PlaySoundEvent(Assets.getSound("engine:PlaceBlock").get(), 0.5f));
-//            SelectedInventorySlotComponent selectedSlot = instigator.getComponent(SelectedInventorySlotComponent.class);
-//            inventoryManager.moveItem(instigator, instigator, selectedSlot.slot, stackEntity, 0, 1);
-//
-//        } else if (canPlaceBlock(blockPos, targetPos)) {
-//            Block newStackBlock = blockManager.getBlockFamily(LAYER_1_URI)
-//                    .getBlockForPlacement(worldProvider, blockEntityRegistry, targetPos, surfaceSide, secondaryDirection);
-//            PlaceBlocks placeNewIngotStack = new PlaceBlocks(targetPos, newStackBlock, instigator);
-//            worldProvider.getWorldEntity().send(placeNewIngotStack);
-//            instigator.send(new PlaySoundEvent(Assets.getSound("engine:PlaceBlock").get(), 0.5f));
-//            inventoryManager.moveItem(instigator, instigator, findSlot(instigator), blockEntityRegistry.getBlockEntityAt(targetPos), 0, 1);
-//            updateIngotStack(targetPos, 1, instigator);
-//        }
-        event.consume();
-    }
-
-//    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
-//    public void onRightClick(ActivateEvent event, EntityRef entity, SlabComponent slabComponent) {
-//        logger.info("Works when pressed");
-//        EntityRef instigator = event.getInstigator();
-//        logger.info("Instigator: "+instigator);
-//        BlockComponent targetBlockComponent = event.getTarget().getComponent(BlockComponent.class);
-//        logger.info("Target Block: "+targetBlockComponent);
-//        if (targetBlockComponent == null) {
-//            event.consume();
-//            return;
-//        }
-//
-//        Side surfaceSide = Side.inDirection(event.getHitNormal());
-//        Side secondaryDirection = ChunkMath.getSecondaryPlacementDirection(event.getDirection(), event.getHitNormal());
-//        Vector3i blockPos = new Vector3i(targetBlockComponent.getPosition());
-//        Vector3i targetPos = new Vector3i(blockPos).add(surfaceSide.getVector3i());
-//        SlabStackComponent stackComponent = event.getTarget().getComponent(SlabStackComponent.class);
-//
-//        logger.info("StackComponent: " + stackComponent);
-//        if (stackComponent != null && stackComponent.slabs < MAX_SLABS) {
-//            logger.info("No: " + stackComponent.slabs + " " + MAX_SLABS);
-//            EntityRef stackEntity = event.getTarget();
-//            instigator.send(new PlaySoundEvent(Assets.getSound("engine:PlaceBlock").get(), 0.5f));
-//            SelectedInventorySlotComponent selectedSlot = instigator.getComponent(SelectedInventorySlotComponent.class);
-//            //inventoryManager.moveItem(instigator, instigator, selectedSlot.slot, stackEntity, 0, 1);
-//
-//        }
-//        else if (canPlaceBlock(blockPos, targetPos)) {
-//            logger.info("Yes: " + stackComponent.slabs);
-//            Block newStackBlock = blockManager.getBlockFamily(LAYER_1_URI)
-//                    .getBlockForPlacement(worldProvider, blockEntityRegistry, targetPos, surfaceSide, secondaryDirection);
-//            PlaceBlocks placeNewSlabStack = new PlaceBlocks(targetPos, newStackBlock, instigator);
-//            worldProvider.getWorldEntity().send(placeNewSlabStack);
-//            instigator.send(new PlaySoundEvent(Assets.getSound("engine:PlaceBlock").get(), 0.5f));
-//            inventoryManager.moveItem(instigator, instigator, findSlot(instigator), blockEntityRegistry.getBlockEntityAt(targetPos), 0, 1);
-//            updateSlabStack(targetPos, 1, instigator);
-//        }
-//        event.consume();
-//    }
-
-//    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
-//    public void onLeftClick(AttackEvent event, EntityRef stackEntity, SlabStackComponent stackComponent) {
-//        EntityRef instigator = event.getInstigator();
-//        if (stackComponent.slabs > 0) {
-//            inventoryManager.moveItem(stackEntity, instigator, 0, instigator, findSlot(instigator), 1);
-//            instigator.send(new PlaySoundEvent(Assets.getSound("engine:Loot").get(), 0.5f));
-//        }
-//        event.consume();
-//    }
-
-    // for real-time updates to the stack
-    @ReceiveEvent
-    public void onStackSizeChange(InventorySlotStackSizeChangedEvent event, EntityRef stackEntity, SlabStackComponent stackComponent) {
-        logger.info("On Stack Size Changing when pressed");
-        EntityRef instigator = localPlayer.getCharacterEntity();
-        LocationComponent locationComponent = stackEntity.getComponent(LocationComponent.class);
-        Vector3i pos = new Vector3i(locationComponent.getWorldPosition());
-        if (event.getNewSize() > MAX_SLABS) {
-            inventoryManager.moveItem(stackEntity, instigator, 0, instigator, findSlot(instigator), event.getNewSize() - MAX_SLABS);
+        if(canPlaceBlock(blockPos, targetPos)){
+            updateSlabStack(targetPos, 1, instigator, slabStackComponent);
         }
-        updateSlabStack(pos, event.getNewSize(), instigator);
+        event.consume();
     }
 
     @ReceiveEvent
@@ -201,20 +103,12 @@ public class SlabStackSystem extends BaseComponentSystem {
         }
     }
 
-    @ReceiveEvent
-    public void onEmpty(InventorySlotChangedEvent event, EntityRef stackEntity, SlabStackComponent stackComponent) {
-        LocationComponent locationComponent = stackEntity.getComponent(LocationComponent.class);
-        Vector3i pos = new Vector3i(locationComponent.getWorldPosition());
-        if (event.getOldItem().hasComponent(SlabComponent.class) && event.getNewItem() == EntityRef.NULL) {
-            updateSlabStack(pos, 0, localPlayer.getCharacterEntity());
-        }
-    }
-
-    private void updateSlabStack(Vector3i stackPos, int slabs, EntityRef instigator) {
+    private void updateSlabStack(Vector3i stackPos, int slabs, EntityRef instigator, SlabStackComponent slabStackComponent) {
         logger.info("Updating slab stack");
         EntityRef stackEntity = blockEntityRegistry.getBlockEntityAt(stackPos);
+        logger.info("stack entity: " + stackEntity);
         Block stackBlock = worldProvider.getBlock(stackPos);
-        String blockUriString = stackBlock.getBlockFamily().getURI().toString();
+        //String blockUriString = stackBlock.getBlockFamily().getURI().toString();
 
         if (slabs < 0 || slabs > MAX_SLABS) {
             return;
@@ -223,20 +117,13 @@ public class SlabStackSystem extends BaseComponentSystem {
             worldProvider.setBlock(stackPos, blockManager.getBlock(BlockManager.AIR_ID));
             return;
         }
-        if (!blockUriString.equalsIgnoreCase(LAYER_1_URI) && !blockUriString.equalsIgnoreCase(LAYER_2_URI) && !blockUriString.equalsIgnoreCase(LAYER_3_URI)) {
-            // not an slab block
-            return;
-        }
 
-        SlabStackComponent stackComponent = stackEntity.getComponent(SlabStackComponent.class);
-        int currentLayers = (stackComponent.slabs - 1) / SLAB_PER_LAYER  + 1;
-        int newLayers = (slabs - 1) / SLAB_PER_LAYER + 1;
-
-        if (currentLayers != newLayers) {
+        logger.info("NUmber of slabs: "+slabStackComponent.slabs);
+        if (slabStackComponent.slabs < MAX_SLABS) {
             BlockFamily blockFamily;
-            if (newLayers == 2) {
+            if (slabStackComponent.slabs == 2) {
                 blockFamily = blockManager.getBlockFamily(LAYER_2_URI);
-            } else if (newLayers == 3) {
+            } else if (slabStackComponent.slabs == 3) {
                 blockFamily = blockManager.getBlockFamily(LAYER_3_URI);
             } else {
                 blockFamily = blockManager.getBlockFamily(LAYER_1_URI);
@@ -246,8 +133,8 @@ public class SlabStackSystem extends BaseComponentSystem {
             worldProvider.getWorldEntity().send(placeNewSlabStack);
             stackEntity = blockEntityRegistry.getBlockEntityAt(stackPos);
         }
-        stackComponent.slabs = slabs;
-        stackEntity.saveComponent(stackComponent);
+        slabStackComponent.slabs++;
+        stackEntity.saveComponent(slabStackComponent);
     }
 
     private boolean canPlaceBlock(Vector3i blockPos, Vector3i targetPos) {

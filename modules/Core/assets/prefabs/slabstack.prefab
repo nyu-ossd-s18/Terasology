@@ -2,7 +2,7 @@
     "PlaySoundAction": {
         "sounds": "engine:click"
     },
-    "SlabStack": {},
-    "InteractionTarget": {},
-    "Network": {}
+    "SlabStack": {
+        "slabs": 1
+    }
 }
