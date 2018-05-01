@@ -96,6 +96,13 @@ public class PlaySoundAction extends BaseComponentSystem {
             if (pos == null) {
                 pos = event.getOrigin();
             }
+            /*if(pos==event.getInstigatorLocation()){
+                audioManager.playSound(sound, pos, playSound.volume, AudioManager.PRIORITY_NORMAL);
+              }
+              else{
+              audioManager.playSound(sound, pos, playSound.volume, AudioManager.PRIORITY_LOW);
+              }
+        */
             audioManager.playSound(sound, pos, playSound.volume, AudioManager.PRIORITY_NORMAL);
         }
     }
